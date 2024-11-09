@@ -55,6 +55,17 @@ app.delete('/jokes/:id', (req, res) => {
       .status(404)
       .json({ error: `Joke with id: ${jokId} not found. No jokes were deleted.` });
   }
+});
+app.delete('/all', (req, res) => {
+  const userKey = req.query.key;
+  if (userKey === masterKey) {
+    jokes = [];
+    res.sendStatus(200)
+  } else {
+    res
+      .status(404)
+      .json({ error: `You are not authorized to perform this action` });
+  }
 })
 
 app.listen(port, () => {
