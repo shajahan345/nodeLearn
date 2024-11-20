@@ -38,7 +38,18 @@ const loginUser = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(404).json({ message: "Password mismatch", data: [] })
         };
-        return res.status(201).json({ message: "success", data: user })
+
+        const accessToken = jwt.sign({ userName }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+        user.token = { accessToken, refreshToken: null };
+        await user.save()
+        return res.status(201).json({
+            message: "success", data: {
+                userName: user.userName,
+                token: {
+                    accessToken: user.token.accessToken
+                }
+            }
+        })
 
     } catch (err) {
         return res.status(500).json({ message: err.message });
