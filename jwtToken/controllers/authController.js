@@ -39,15 +39,14 @@ const loginUser = async (req, res) => {
             return res.status(404).json({ message: "Password mismatch", data: [] })
         };
 
-        const accessToken = jwt.sign({ userName }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-        user.token = { accessToken, refreshToken: null };
+        const accessToken = jwt.sign({ userName }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '3h' });
+        const refreshToken = jwt.sign({ userName }, process.env.REFRESH_TOKEN_SECRET);
+        user.token = { accessToken, refreshToken };
         await user.save()
         return res.status(201).json({
             message: "success", data: {
                 userName: user.userName,
-                token: {
-                    accessToken: user.token.accessToken
-                }
+                token: user.token
             }
         })
 

@@ -2,7 +2,8 @@ import express from 'express';
 import 'dotenv/config';
 import { connectMongoDb } from './connection.js';
 import { errorHandler } from './middlewares/errorHandler.js';
-import authRouter from './routes/auth.js'
+import authRouter from './routes/auth.js';
+import productRouter from './routes/products.js'
 const app = express();
 const port = process.env.PORT;
 connectMongoDb(process.env.CONNECTION_STRING).then((e) => {
@@ -13,8 +14,8 @@ connectMongoDb(process.env.CONNECTION_STRING).then((e) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorHandler);
-app.use('/users', authRouter)
-
+app.use('/users', authRouter);
+app.use('/products', productRouter);
 
 
 app.listen(port, () => {

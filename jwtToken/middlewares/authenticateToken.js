@@ -12,6 +12,6 @@ const authenticateToken = async (req, res, next) => {
         }
         req.user = decoded;
         next();
-    })
+    });
 }
 export { authenticateToken }
